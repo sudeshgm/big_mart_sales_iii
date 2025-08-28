@@ -41,14 +41,20 @@ def split_identifier(data, drop=False):
     if drop:
         data.drop(column=["Item_Identifier"],inplace=True)
 
+def clip_item_visibility(data, threshold = 0.2):
+    data["Item_Visibility"] > threshold = threshold
+
 def data_pipeline(path):
     # read from csv
     data = read_data(path)
-    # merge categories of Item_Fat_Content
-    map_fat(data)
     # Split Item_Identifier into 3 columns to reduce dimensionality
     split_identifier(data)
-    
+    # merge categories of Item_Fat_Content
+    map_fat(data)
+    # Clip values of Item_Visibility to nullify effects of outliers
+    clip_item_visibility(data)
+
+
     processed_data = None
     for column in CATEGORICAL_COLS:
         encoded_col = one_hot_encode(data,column,drop=True)
