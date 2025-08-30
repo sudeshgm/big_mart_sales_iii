@@ -74,8 +74,8 @@ def normalize(data, column, clip = False):
     Returns:
         np.Ndarray: Normalized array
     """    
-    scaler = MinMaxScaler((MIN_MAX[column]["min"],MIN_MAX[column]["min"]),clip=clip)
-    normalized_col = scaler.fit_transform(data["column"])
+    scaler = MinMaxScaler((MIN_MAX[column]["min"],MIN_MAX[column]["max"]),clip=clip)
+    normalized_col = scaler.fit_transform(data[column])
     return normalized_col
 
 def one_hot_encode(data, column):
